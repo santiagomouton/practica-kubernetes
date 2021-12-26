@@ -1,0 +1,16 @@
+<div id="123"></div>
+
+<script>
+    var xmlhttp = new XMLHttpRequest();
+    var url = "https://10.101.58.160:80";
+
+    xmlhttp.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200){
+            var myArr = JSON.parse(responseText);
+            document.getElementById("123").innerHTML = "<h2>La hora es" + myArr.time + "</h2>";
+        }
+    }
+
+    xmlhttp.open("GET", url);
+    xmlhttp.send();
+</script>

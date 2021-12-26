@@ -1,35 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-k8s-golang
+  name: frontend-k8s-golang
   labels:
-    app: backend
+    app: frontend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: backend
+      app: frontend
   template:
     metadata:
       labels:
-        app: backend
+        app: frontend
     spec:
       containers:
-      - name: golang-api
-        image: k8s-backend:1.0
+      - name: frontend
+        image: k8s-frontend:1.0
         imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-k8s-golang
+  name: frontend-k8s-golang
   labels:
-    app: backend
+    app: frontend
 spec:
-  type: ClusterIP 
+  type: NodePort
   selector:
-    app: backend
+    app: frontend
   ports:
   - protocol: TCP
     port: 80
-    targetPort: 9090
+    targetPort: 80
