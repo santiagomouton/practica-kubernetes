@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name:  dev
+  labels:
+    name:  dev
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name:  prod
+  labels:
+    name:  prod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-dev
+  namespace: dev
+  labels:
+    name:  dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dev
+  template:
+    metadata:
+      labels:
+        app: dev
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-prod
+  namespace: prod
+  labels:
+    name:  prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: prod
+  template:
+    metadata:
+      labels:
+        app: prod
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
