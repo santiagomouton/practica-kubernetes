@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name:  limit-resource-ns
+  labels:
+    name:  limit-resource-ns
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: constrain-resource
+  namespace: limit-resource-ns
+spec:
+  limits:
+  - type: Container
+    max:
+      cpu: 500m
+      memory: 512Mi
+    min:
+      cpu: 100m
+      memory: 100Mi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: podtest
+  namespace: default-resource-ns
+  labels:
+    app: podtest
+spec:
+  containers:
+  - name: pod1
+    image: nginx:alpine
+    resources:
+      limits:
+        cpu: 500m
+        memory: 500Mi
+      requests:
+        cpu: 300m
+        memory: 400Mi
