@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sc-pvc
+  labels:
+    app: sc-pvc
+spec:
+  storageClassName: standard  #Nos reserva dinamicamente un pv
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi

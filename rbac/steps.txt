@@ -1,0 +1,20 @@
+## RBAC
+minikube start --vm-driver=none --extra-config=apiserver.authorization-mode=RBAC
+
+## Create keys and sign
+openssl genrsa -out santiago.key 2048
+openssl req -new -key santiago.key -out santiago.csr -subj "/CN=santiago/0=dev"
+sudo openssl x509 -req -in santiago.csr -CA (ca.crt)(este path se obtiene de kubectl config view)
+-CAkey (ca.key)(este path se obtiene de kubectl config view) -CAcreateserial -out santiago.crt -days 500
+openssl x509 -in santiago.crt -noout -text
+
+## Isolated env
+kubectl config view | grep server
+docker run --rm -ti -v $PWD:/test -w /test -v /root/.minikube/ca.crt -v /usr/bin/kubectl:/usr/bin/kubectl 
+alpine sh
+
+# Configure kubectl for user
+kubectl config set-cluster minikube --server=https://192.168.49.2:8443 --certificate-authority=/ca.crt
+kubectl config set-credentials santiago --client-certificate=santiago.crt --client-key=santiago.key
+kubectl config set-context santiago --cluster=minikube --user=santiago
+kubectl config set-context santiago
